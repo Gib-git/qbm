@@ -11,7 +11,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [chapter, setChapter] = useState(null);
-  const [showBuyButton, setShowBuyButton] = useState(true);
+  const [showBuyButton, setShowBuyButton] = useState(false);
   const [showTranslation, setShowTranslation] = useState(true);
   const [showTransliteration, setShowTransliteration] = useState(true);
 
@@ -142,11 +142,11 @@ function App() {
           <div className='text-right pb-4 text-2xl'>
             <i onClick={() => setShowBuyButton(false)} class={`fa-solid fa-rectangle-xmark text-black ${darkMode && "text-white"} hover:text-red-500 cursor-pointer transition-all`}></i>
           </div>
-          {/* <stripe-buy-button
+          <stripe-buy-button
             buy-button-id="buy_btn_1QHxGWDhKYlaBIy6KOZo13yo"
             publishable-key="pk_live_51M44AMDhKYlaBIy6vP7sDbCcKG4Z6GURG38p7FPd8dQ4HIc8rSpAZp8GR9wAtVW7sW8QMw3x7mT8jg78mUtIC7rt00XaRiNOPW"
           >
-          </stripe-buy-button> */}
+          </stripe-buy-button>
         </div>
       )}
     </div>
