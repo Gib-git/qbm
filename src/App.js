@@ -12,6 +12,8 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [chapter, setChapter] = useState(null);
   const [showBuyButton, setShowBuyButton] = useState(true);
+  const [showTranslation, setShowTranslation] = useState(true);
+  const [showTransliteration, setShowTransliteration] = useState(true);
 
   const getChapters = async () => {
     const response = await fetch('https://api.quran.com/api/v4/chapters');
@@ -78,6 +80,14 @@ function App() {
           <div className="border rounded"><AddSubtract title="Transliteration Font Size" getValue={setTransliterationFontSize} defaultValue={transliterationFontSize} textfonts /></div>
           <div className="border rounded"><AddSubtract title="Translation Font Size" getValue={setTranslationFontSize} defaultValue={translationFontSize} textfonts /></div>
           <div className="border rounded"><AddSubtract title="Arabic Font Size" getValue={setArabicFontSize} defaultValue={arabicFontSize} /></div>
+          <div className="flex flex-row gap-4 items-center">
+          <div className=" rounded flex flex-row gap-2">Show Translation<input label="Show Translation" name="Show Translation" type="checkbox" checked={showTranslation} onChange={(e) => {
+            setShowTranslation(e.target.checked)
+          }} /></div>
+          <div className="rounded flex flex-row gap-2">Show Transliteration<input label="Show Transliteration" name="Show Transliteration" type="checkbox" checked={showTransliteration} onChange={(e) => {
+            setShowTransliteration(e.target.checked)
+          }} /></div>
+          </div>
           <div className=" bg-white px-4 py-2 rounded cursor-pointer border" onClick={() => generatePDF(getTargetElement, options)}>
             Download PDF
           </div>
@@ -108,7 +118,7 @@ function App() {
             <div><i className="fa-solid fa-sync fa-spin mr-2"></i> Loading...</div>
           </div>
         )}
-        <div dir="rtl" className={`h-full ${darkMode ? 'text-white' : 'text-black'}`}>
+        <div dir="rtl" className={`h-full w-full flex flex-row gap-4 ${darkMode ? 'text-white' : 'text-black'}`}>
           {verses.map(verse => (
             verse.words.map((word, index) => (
               <Textbit
@@ -120,6 +130,8 @@ function App() {
                 translation={word.translation.text}
                 translationFontSize={translationFontSize}
                 transliterationFontSize={transliterationFontSize}
+                  showTranslation={showTranslation}
+                  showTransliteration={showTransliteration}
               />
             ))
           ))}
@@ -130,23 +142,25 @@ function App() {
           <div className='text-right pb-4 text-2xl'>
             <i onClick={() => setShowBuyButton(false)} class={`fa-solid fa-rectangle-xmark text-black ${darkMode && "text-white"} hover:text-red-500 cursor-pointer transition-all`}></i>
           </div>
-          <stripe-buy-button
+          {/* <stripe-buy-button
             buy-button-id="buy_btn_1QHxGWDhKYlaBIy6KOZo13yo"
             publishable-key="pk_live_51M44AMDhKYlaBIy6vP7sDbCcKG4Z6GURG38p7FPd8dQ4HIc8rSpAZp8GR9wAtVW7sW8QMw3x7mT8jg78mUtIC7rt00XaRiNOPW"
           >
-          </stripe-buy-button>
+          </stripe-buy-button> */}
         </div>
       )}
     </div>
   );
 }
 
-function Textbit({ arabic, transliteration, translation, arabicFontSize, translationFontSize, transliterationFontSize, verseId }) {
+function Textbit({ arabic, transliteration, translation, arabicFontSize, translationFontSize, transliterationFontSize, verseId, showTranslation, showTransliteration }) {
   return (
-    <div className={`px-4 py-2 text-center inline-block z-10 ${arabicFontSize > 7 && 'mb-8'}`} data-id={verseId}>
-      <div className={`p-2 text-${arabicFontSize}xl  amiri-quran-regular`}>{arabic}</div>
-      <div className={`p-1 text-[${transliterationFontSize}px] ${arabicFontSize > 7 ? 'mt-24' : 'mt-12'}`}>{transliteration}</div>
-      <div className={`p-1 text-[${translationFontSize}px]`}>{translation}</div>
+    <div className={`px-4 py-2 text-center inline-block z-10 flex flex-col gap-10 `} data-id={verseId}>
+      <div className={`p-2 text-${arabicFontSize}xl  amiri-quran-regular !leading-normal mb-4`}>{arabic}</div>
+      <div className="flex flex-col gap-2">
+      {showTransliteration && transliteration && <div className={`p-1 text-[${transliterationFontSize}px] `}>{transliteration}</div>}
+      {showTranslation && translation && <div className={`p-1 text-[${translationFontSize}px] `}>{translation}</div>}
+      </div>
     </div>
   );
 }
