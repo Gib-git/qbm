@@ -118,7 +118,7 @@ function App() {
             <div><i className="fa-solid fa-sync fa-spin mr-2"></i> Loading...</div>
           </div>
         )}
-        <div dir="rtl" className={`h-full w-full flex flex-row gap-4 ${darkMode ? 'text-white' : 'text-black'}`}>
+        <div dir="rtl" className={`h-full flex-wrap w-auto  flex flex-row gap-4 ${darkMode ? 'text-white' : 'text-black'}`}>
           {verses.map(verse => (
             verse.words.map((word, index) => (
               <Textbit
